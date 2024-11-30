@@ -1,0 +1,46 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Tiempo de reaccion",
+  "version": "0.1.0",
+  "identifier": "com.ms.app",
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "devUrl": "http://localhost:4321/",
+    "beforeBuildCommand": "pnpm build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "title": "Tiempo de raccion",
+        "width": 800,
+        "height": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "createUpdaterArtifacts": true,
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "plugins": {
+      "updater": {
+        "pubkey": "CONTENT FROM PUBLICKEY.PEM",
+        "endpoints": [
+          "https://releases.myapp.com/{{target}}/{{arch}}/{{current_version}}",
+          "https://github.com/user/repo/releases/latest/download/latest.json"
+        ]
+      }
+    }
+  }
+}

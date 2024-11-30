@@ -1,0 +1,2 @@
+$env:TAURI_SIGNING_PRIVATE_KEY="C:\Users\nichokas\.tauri\ms.key"
+$env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD=""
