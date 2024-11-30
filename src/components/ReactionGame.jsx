@@ -1,13 +1,10 @@
 // src/components/ReactionGame.jsx
 import React, { useState, useEffect, useCallback } from 'react';
-import { check } from '@tauri-apps/plugin-updater';
-import { relaunch } from '@tauri-apps/plugin-process';
 
 const GameStates = {
     IDLE: 'idle',
     WAITING: 'waiting',
-    READY: 'ready',
-    UPDATING: 'updating'
+    READY: 'ready'
 };
 
 const Colors = {
@@ -22,52 +19,9 @@ export default function ReactionGame() {
     const [startTime, setStartTime] = useState(null);
     const [result, setResult] = useState('');
     const [timeoutId, setTimeoutId] = useState(null);
-    const [updateStatus, setUpdateStatus] = useState('');
-    const [downloadProgress, setDownloadProgress] = useState(0);
-
-    // Función para manejar actualizaciones
-    const checkForUpdates = async () => {
-        try {
-            const update = await check();
-            if (update) {
-                setGameState(GameStates.UPDATING);
-                setUpdateStatus(`Nueva actualización disponible: ${update.version}`);
-
-                let downloaded = 0;
-                let contentLength = 0;
-
-                await update.downloadAndInstall((event) => {
-                    switch (event.event) {
-                        case 'Started':
-                            contentLength = event.data.contentLength;
-                            setUpdateStatus('Iniciando descarga...');
-                            break;
-                        case 'Progress':
-                            downloaded += event.data.chunkLength;
-                            const progress = (downloaded / contentLength) * 100;
-                            setDownloadProgress(progress);
-                            setUpdateStatus(`Descargando: ${progress.toFixed(1)}%`);
-                            break;
-                        case 'Finished':
-                            setUpdateStatus('Descarga completada. Reiniciando...');
-                            break;
-                    }
-                });
-
-                setUpdateStatus('Actualización instalada. Reiniciando...');
-                await relaunch();
-            }
-        } catch (error) {
-            console.error('Error al buscar actualizaciones:', error);
-        }
-    };
-
-    useEffect(() => {
-        checkForUpdates();
-    }, []);
 
     const handleInteraction = useCallback((e) => {
-        if (e?.target?.tagName === 'BUTTON' || gameState === GameStates.UPDATING) {
+        if (e?.target?.tagName === 'BUTTON') {
             return;
         }
 
@@ -113,22 +67,6 @@ export default function ReactionGame() {
             if (timeoutId) clearTimeout(timeoutId);
         };
     }, [handleInteraction, timeoutId]);
-
-    if (gameState === GameStates.UPDATING) {
-        return (
-            <div className="fixed inset-0 flex flex-col items-center justify-center bg-gray-900 text-white">
-                <div className="text-2xl mb-4">{updateStatus}</div>
-                {downloadProgress > 0 && (
-                    <div className="w-64 bg-gray-700 rounded-full h-4 overflow-hidden">
-                        <div
-                            className="h-full bg-blue-500 transition-all duration-300"
-                            style={{ width: `${downloadProgress}%` }}
-                        />
-                    </div>
-                )}
-            </div>
-        );
-    }
 
     return (
         <div
