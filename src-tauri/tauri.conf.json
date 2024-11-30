@@ -37,7 +37,7 @@
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEUxQjhBQ0Y1MUFDMEU0MEYKUldRUDVNQWE5YXk0NFdLZ3IvSFVTbHIydmpQLzFwQk80NUpRVC94RUZaOG9hSTFmSFo1VzRvdEIK",
       "endpoints": [
-        "https://github.com/user/repo/releases/latest/download/latest.json"
+        "https://github.com/nichokas/ms/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"
